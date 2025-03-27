@@ -35,17 +35,18 @@ Route::middleware([
     // prefix barang
     Route::prefix('barang')->group(function () {
         Route::get('/', [BarangController::class, 'index'])->name('barang');
-        Route::get('/tambah', [BarangController::class, 'tambah'])->name('barang.tambah');
+        Route::get('/create', [BarangController::class, 'create'])->name('barang.create');
         Route::post('/store', [BarangController::class, 'store'])->name('barang.store');
+        Route::get('/show/{id}', [BarangController::class, 'show'])->name('barang.show');
         Route::get('/edit/{id}', [BarangController::class, 'edit'])->name('barang.edit');
-        Route::post('/update/{id}', [BarangController::class, 'update'])->name('barang.update');
-        Route::get('/hapus/{id}', [BarangController::class, 'hapus'])->name('barang.hapus');
+        Route::put('/update/{id}', [BarangController::class, 'update'])->name('barang.update');
+        Route::get('/destory/{id}', [BarangController::class, 'destory'])->name('barang.destory');
     });
 
     // prefix kategori barang
     Route::prefix('kategori-barang')->group(function () {
         Route::get('/', [KategoriBarangController::class, 'index'])->name('kategori-barang');
-        Route::get('/tambah', [KategoriBarangController::class, 'tambah'])->name('kategori-barang.tambah');
+        Route::get('/create', [KategoriBarangController::class, 'create'])->name('kategori-barang.create');
         Route::post('/store', [KategoriBarangController::class, 'store'])->name('kategori-barang.store');
         Route::get('/edit/{id}', [KategoriBarangController::class, 'edit'])->name('kategori-barang.edit');
         Route::post('/update/{id}', [KategoriBarangController::class, 'update'])->name('kategori-barang.update');
@@ -55,7 +56,7 @@ Route::middleware([
     // prefix ruangan
     Route::prefix('ruangan')->group(function () {
         Route::get('/', [RuanganController::class, 'index'])->name('ruangan');
-        Route::get('/tambah', [RuanganController::class, 'tambah'])->name('ruangan.tambah');
+        Route::get('/create', [RuanganController::class, 'create'])->name('ruangan.create');
         Route::post('/show', [RuanganController::class, 'show'])->name('ruangan.show');
         Route::post('/store', [RuanganController::class, 'store'])->name('ruangan.store');
         Route::get('/edit/{id}', [RuanganController::class, 'edit'])->name('ruangan.edit');
@@ -67,7 +68,7 @@ Route::middleware([
     // prefix kategori ruangan
     Route::prefix('kategori-ruangan')->group(function () {
         Route::get('/', [KategoriRuanganController::class, 'index'])->name('kategori-ruangan');
-        Route::get('/tambah', [KategoriRuanganController::class, 'tambah'])->name('kategori-ruangan.tambah');
+        Route::get('/create', [KategoriRuanganController::class, 'create'])->name('kategori-ruangan.create');
         Route::post('/store', [KategoriRuanganController::class, 'store'])->name('kategori-ruangan.store');
         Route::get('/edit/{id}', [KategoriRuanganController::class, 'edit'])->name('kategori-ruangan.edit');
         Route::post('/update/{id}', [KategoriRuanganController::class, 'update'])->name('kategori-ruangan.update');

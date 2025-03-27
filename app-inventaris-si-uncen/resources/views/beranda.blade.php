@@ -18,33 +18,34 @@
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                        class="fas fa-download fa-sm text-white-50"></i> Unduh Laporan</a>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Lihat Laporan</a>
             </div>
 
             <!-- Content Row -->
             <div class="row">
 
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-4 mb-4">
 
                     <!-- Illustrations -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Selamat datang!</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Selamat datang, {{ Auth::user()->name }}!</h6>
                         </div>
                         <div class="card-body">
                             <div class="text-center">
                                 <img class="img-fluid px-3 px-sm-4 mt-3 mb-4 rounded-circle" style="width: 7rem;"
-                                src="https://avatars.githubusercontent.com/u/114337187?v=4" alt="...">
+                                src="{{ Auth::user()->profile_photo_path }}" alt="foto profil">
+                                <p class="p-0 m-0 font-weight-bold">{{ Auth::user()->name }}</p>
+                                <p class="p-0 m-0"><i class="fas fa-fw fa-envelope"></i> {{ Auth::user()->email }}</p>
                                     
-                                <p>{{ ENV('APP_NAME') }} merupakan proyek Tugas Akhir yang dikembangkan oleh <a href="https://github.com/seanpaulsesa/">Paulus Sesa</a> pada Jurusan Sistem Informasi Universitas Cenderawasih pada tahun 2025.</p>
+                                
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-8 mb-4">
 
                     <!-- Illustrations -->
                     <div class="card shadow mb-4">
@@ -52,6 +53,8 @@
                             <h6 class="m-0 font-weight-bold text-primary">Fitur Utama Sistem Informasi</h6>
                         </div>
                         <div class="card-body">
+                            <p>{{ ENV('APP_NAME') }} merupakan proyek Tugas Akhir yang dikembangkan oleh <a href="https://github.com/seanpaulsesa/">Paulus Sesa</a> pada Jurusan Sistem Informasi Universitas Cenderawasih pada tahun 2025.</p>
+
                             <p>Berikut merupakan fitur-fitur utama pada sistem informasi:</p>
                             <h5>Manajemen Barang</h5>
                             <ul>

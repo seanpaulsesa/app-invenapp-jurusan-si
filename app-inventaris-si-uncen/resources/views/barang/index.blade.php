@@ -25,18 +25,24 @@
                         For more information about DataTables, please visit the <a target="_blank"
                             href="https://datatables.net">official DataTables documentation</a>.</p>
 
+                    @include('layouts.allerts')
+
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Tabel Data Barang</h6>
+                            <a href="{{ route('barang.create') }}" class="btn btn-primary btn-sm mb-3">Tambah Barang</a>
                         </div>
                         <div class="card-body">
+
+                        
+
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Ruangan</th>
+                                            <th>Nama Barang</th>
                                             <th>Kategori</th>
                                             <th>Keterangan</th>
                                             <th></th>
@@ -52,10 +58,10 @@
                                                 <td>{{ $data->keterangan }}</td>
                                                 <td>
                                                     <!-- view button -->
-                                                    <a href="{{ route('ruangan.show', $data->id) }}" class="btn btn-info btn-sm">View</a>
+                                                    <a href="{{ route('barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a>
                                                     <!-- edit and delete buttons -->
-                                                    <a href="{{ route('ruangan.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                                    <form action="{{ route('ruangan.destroy', $data->id) }}" method="POST" style="display:inline;">
+                                                    <a href="{{ route('barang.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                                    <form action="{{ route('barang.destory', $data->id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -89,10 +95,49 @@
 @push('scripts')
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+    <!-- <script>
         $(document).ready(function () {
             $('#dataTable tbody tr').each(function (index) {
                 $(this).find('td:first').text(index + 1);
+            });
+        });
+    </script> -->
+
+    <script>
+        $(document).ready(function () {
+            // Inisialisasi DataTable
+            var table = $('#dataTable').DataTable({
+                "dom": '<"row"<"col-sm-6"l><"col-sm-6 d-flex justify-content-end"f>>rtip',
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [[1, 'asc']]
+            });
+
+            // Menambahkan nomor urut otomatis
+            table.on('order.dt search.dt', function () {
+                table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+
+            
+
+            // Pindahkan dropdown ke dalam toolbar DataTables
+            $('#dataTable_filter').append(
+                '<label class="mr-2"><select id="filterKategori" class="form-control form-control-sm ml-2"><option value="">Semua Kategori</option></select></label>'
+            );
+
+            // Tambahkan opsi kategori ke dropdown dalam toolbar
+            @foreach($kategoriBarang as $item)
+                $('#filterKategori').append('<option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>');
+            @endforeach
+
+            // Event untuk filter kategori
+            $('#filterKategori').on('change', function () {
+                table.column(2).search(this.value).draw();
             });
         });
     </script>

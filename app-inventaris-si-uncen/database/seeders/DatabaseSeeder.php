@@ -19,6 +19,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => bcrypt('test@example.com'),
+            'profile_photo_path' => 'https://avatar.iran.liara.run/public/28',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Paulus Sesa',
+            'email' => 'p.sesa@mail.com',
+            'password' => bcrypt('p.sesa@mail.com'),
+            'profile_photo_path' => 'https://avatar.iran.liara.run/public/46',
         ]);
 
         // $this->call([
