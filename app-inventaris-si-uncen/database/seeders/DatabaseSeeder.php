@@ -18,6 +18,15 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'password' => bcrypt('test@example.com'),
         ]);
+
+        // $this->call([
+        //     BarangSeeder::class,
+        // ]);
+        
+        \App\Models\Barang::factory(20)->create();
+        \App\Models\KategoriBarang::factory(20)->create();
+
     }
 }
