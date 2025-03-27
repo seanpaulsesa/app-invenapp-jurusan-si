@@ -10,16 +10,29 @@ class BarangController extends Controller
 {
     public function index()
     {
+        // mengambil semua data barang untuk ditampilkan pada tabel barang
         $datas = Barang::all();
+
+        // mengambil semua data kategori barang untuk ditampilkan pada dropdown filter kategori barang
         $kategoriBarang = KategoriBarang::all();
 
-        return view('barang.index', compact('datas', 'kategoriBarang'));
+        // judul dan deskripsi halaman
+        $pageTitle = "Barang";
+        $pageDescription = "Lihat dan kelola daftar barang yang tersedia. Gunakan fitur pencarian dan filter kategori untuk menemukan barang dengan mudah.";
+
+        return view('barang.index', compact('pageTitle','pageDescription','datas', 'kategoriBarang'));
     }
 
     public function create()
     {
+        // mengambil semua data kategori barang untuk ditampilkan pada dropdown/select kategori barang
         $kategoriBarang = KategoriBarang::all();
-        return view('barang.form', compact('kategoriBarang'));
+
+        // judul dan deskripsi halaman
+        $pageTitle = "Tambah Barang";
+        $pageDescription = "Silakan tambahkan data barang baru dengan mengisi formulir di bawah ini. Pastikan semua informasi yang dimasukkan sudah benar sebelum disimpan.";
+
+        return view('barang.form', compact('pageTitle','pageDescription','kategoriBarang'));
     }
 
     public function store(Request $request)
@@ -45,9 +58,17 @@ class BarangController extends Controller
 
     public function edit($id)
     {
+        // mengambil data barang berdasarkan id yang dikirimkan di url
         $data = Barang::findOrFail($id);
+
+        // mengambil semua data kategori barang untuk ditampilkan pada dropdown/select kategori barang
         $kategoriBarang = KategoriBarang::all();
-        return view('barang.form', compact('data', 'kategoriBarang'));
+
+        // judul dan deskripsi halaman
+        $pageTitle = "Ubah Barang";
+        $pageDescription = "Perbarui informasi barang sesuai kebutuhan. Pastikan perubahan yang dilakukan sudah sesuai sebelum menyimpan data.";
+
+        return view('barang.form', compact('pageTitle','pageDescription','data', 'kategoriBarang'));
     }
 
     public function update(Request $request, $id)
@@ -71,113 +92,35 @@ class BarangController extends Controller
             return redirect()->route('barang.edit', $id)->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+    
+    // show
+    public function show($id)
+    {
+        // mengambil data barang berdasarkan id yang dikirimkan di url
+        $data = Barang::findOrFail($id);
+
+        // judul dan deskripsi halaman
+        $pageTitle = "Tambah Barang";
+        $pageDescription = "Lihat informasi lengkap mengenai barang yang dipilih. Pastikan data yang ditampilkan sesuai dengan kebutuhan Anda.";
+
+        return view('barang.show', compact('pageTitle','pageDescription','data'));
+    }
+
+    // delete
     public function destroy($id)
     {
         try {
-            // Hapus data barang
+            // Temukan data barang berdasarkan ID
             $data = Barang::findOrFail($id);
+            
+            // Hapus data secara permanen
             $data->delete();
 
-            // Redirect dengan pesan sukses
-            return redirect()->route('barang')->with('success', 'Barang berhasil dihapus');
+            return redirect()->route('barang')->with('success', 'Barang berhasil dihapus secara permanen dari database');
         } catch (\Exception $e) {
-            // Redirect dengan pesan error jika gagal menghapus
-            return redirect()->route('barang')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->route('barang')->with('error', 'Gagal menghapus barang: ' . $e->getMessage());
         }
     }
-    public function show($id)
-    {
-        $data = Barang::findOrFail($id);
-        return view('barang.show', compact('data'));
-    }
-
- 
-
-    public function filter(Request $request)
-    {
-        $kategori_id = $request->input('kategori_id');
-        $datas = Barang::where('kategori_id', $kategori_id)->get();
-        return view('barang.index', compact('datas'));
-    }
-    
-    public function export()
-    {
-        $datas = Barang::all();
-        $filename = 'barang_' . date('Y-m-d') . '.csv';
-        $handle = fopen('php://output', 'w');
-        fputcsv($handle, ['ID', 'Nama', 'Kategori ID', 'Keterangan']);
-        foreach ($datas as $data) {
-            fputcsv($handle, [$data->id, $data->nama, $data->kategori_id, $data->keterangan]);
-        }
-        fclose($handle);
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        exit;
-    }
-    public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:csv,txt',
-        ]);
-
-        $file = $request->file('file');
-        $handle = fopen($file, 'r');
-        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
-            Barang::create([
-                'nama' => $data[1],
-                'kategori_id' => $data[2],
-                'keterangan' => $data[3],
-            ]);
-        }
-        fclose($handle);
-
-        return redirect()->route('barang')->with('success', 'Barang berhasil diimpor');
-    }
-    public function print()
-    {
-        $datas = Barang::all();
-        return view('barang.print', compact('datas'));
-    }
-    public function pdf()
-    {
-        $datas = Barang::all();
-        $pdf = \PDF::loadView('barang.pdf', compact('datas'));
-        return $pdf->download('barang.pdf');
-    }
-    public function excel()
-    {
-        $datas = Barang::all();
-        return \Excel::download(new \App\Exports\BarangExport($datas), 'barang.xlsx');
-    }
-    public function importView()
-    {
-        return view('barang.import');
-    }
-    public function exportView()
-    {
-        return view('barang.export');
-    }
-    public function printView()
-    {
-        return view('barang.print');
-    }
-    public function pdfView()
-    {
-        return view('barang.pdf');
-    }
-    public function excelView()
-    {
-        return view('barang.excel');
-    }
-    public function searchView()
-    {
-        return view('barang.search');
-    }
-    public function filterView()
-    {
-        return view('barang.filter');
-    }
-    
 
 
 }

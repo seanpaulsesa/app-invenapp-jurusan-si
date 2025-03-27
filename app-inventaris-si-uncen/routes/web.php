@@ -40,7 +40,7 @@ Route::middleware([
         Route::get('/show/{id}', [BarangController::class, 'show'])->name('barang.show');
         Route::get('/edit/{id}', [BarangController::class, 'edit'])->name('barang.edit');
         Route::put('/update/{id}', [BarangController::class, 'update'])->name('barang.update');
-        Route::get('/destory/{id}', [BarangController::class, 'destory'])->name('barang.destory');
+        Route::delete('/destroy/{id}', [BarangController::class, 'destroy'])->name('barang.destroy');
     });
 
     // prefix kategori barang

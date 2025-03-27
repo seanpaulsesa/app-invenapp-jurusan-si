@@ -20,10 +20,8 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Barang</h1>
-                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p>
+                    <h1 class="h3 mb-2 text-gray-800">{{ $pageTitle }}</h1>
+                    <p class="mb-4">{{ $pageDescription }}</p>
 
                     @include('layouts.allerts')
 
@@ -61,11 +59,11 @@
                                                     <a href="{{ route('barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a>
                                                     <!-- edit and delete buttons -->
                                                     <a href="{{ route('barang.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                                    <form action="{{ route('barang.destory', $data->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
+                                                    
+                                                    <!-- Tombol Hapus -->
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('barang.destroy', $data->id) }}')">
+                                                        Hapus
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @empty
@@ -75,6 +73,34 @@
                                         @endforelse
                                     </tbody>
                                 </table>
+
+
+                                <!-- Modal Konfirmasi Hapus -->
+                                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus barang ini secara permanen? <b>Tindakan ini tidak dapat dibatalkan setelah Anda klik tombol Hapus</b>.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                <form id="deleteForm" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -92,16 +118,20 @@
     
 @endsection
 
+
 @push('scripts')
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script>
-        $(document).ready(function () {
-            $('#dataTable tbody tr').each(function (index) {
-                $(this).find('td:first').text(index + 1);
-            });
-        });
-    </script> -->
+
+    <!-- Bootstrap JS (Pastikan ini setelah jQuery) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function confirmDelete(url) {
+            $('#deleteForm').attr('action', url);
+            $('#deleteModal').modal('show');
+        }
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -141,6 +171,8 @@
             });
         });
     </script>
+
+
 
     <!-- Page level plugins -->
     <script src="{{ asset('template/vendor/datatables/jquery.dataTables.min.js') }}"></script>
