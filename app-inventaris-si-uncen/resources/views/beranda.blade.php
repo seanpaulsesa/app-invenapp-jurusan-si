@@ -58,14 +58,14 @@
                             <p>Berikut merupakan fitur-fitur utama pada sistem informasi:</p>
                             <h5>Manajemen Barang</h5>
                             <ul>
-                                <li><a href="#">Barang</a></li>
-                                <li><a href="#">Kategori Barang</a></li>
+                                <li><a href="{{ route('barang') }}">Barang</a></li>
+                                <li><a href="{{ route('kategori-barang') }}">Kategori Barang</a></li>
                             </ul>
 
                             <h5>Manajemen Ruangan</h5>
                             <ul>
-                                <li><a href="#">Ruangan</a></li>
-                                <li><a href="#">Kategori Ruangan</a></li>
+                                <li><a href="{{ route('ruangan') }}">Ruangan</a></li>
+                                <li><a href="{{ route('kategori-ruangan') }}">Kategori Ruangan</a></li>
                             </ul>
 
                             <h5>Laporan</h5>
