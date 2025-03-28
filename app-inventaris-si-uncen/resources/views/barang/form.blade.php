@@ -28,7 +28,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Formulir Tambah Data Barang</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Formulir {{ $pageTitle }}</h6>
                             <a href="{{ route('barang') }}" class="btn btn-primary btn-sm mb-3">Kembali</a>
                         </div>
                         <div class="card-body">

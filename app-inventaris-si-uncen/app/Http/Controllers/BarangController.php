@@ -145,7 +145,7 @@ class BarangController extends Controller
         $data = Barang::findOrFail($id);
 
         // judul dan deskripsi halaman
-        $pageTitle = "Tambah Barang";
+        $pageTitle = "Detail Barang";
         $pageDescription = "Lihat informasi lengkap mengenai barang yang dipilih. Pastikan data yang ditampilkan sesuai dengan kebutuhan Anda.";
 
         return view('barang.show', compact('pageTitle','pageDescription','data'));

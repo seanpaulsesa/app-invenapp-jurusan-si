@@ -28,7 +28,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Tabel Data Barang</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tabel Data {{ $pageTitle }}</h6>
                             <a href="{{ route('kategori-barang.create') }}" class="btn btn-primary btn-sm mb-3">Tambah Kategori Barang</a>
                         </div>
                         <div class="card-body">
