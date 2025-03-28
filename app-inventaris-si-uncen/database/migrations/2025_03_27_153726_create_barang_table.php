@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('barang', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->string('gambar')->nullable();
             $table->unsignedBigInteger('kategori_id'); // Harus unsignedBigInteger untuk foreign key
             $table->text('keterangan')->nullable();
             $table->timestamps();

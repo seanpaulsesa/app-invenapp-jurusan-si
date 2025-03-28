@@ -33,23 +33,29 @@
                             
                         <!-- Nama Barang -->
                         <div class="mb-3">
-                            <strong>Nama Barang:</strong>
+                            <label>Nama Barang:</label>
                             <p class="form-control">{{ $data->nama }}</p>
                         </div>
 
                         <!-- Kategori Barang -->
                         <div class="mb-3">
-                            <strong>Kategori:</strong>
+                            <label>Kategori:</label>
                             <p class="form-control">{{ $data->kategori->nama_kategori }}</p>
                         </div>
 
                         <!-- Keterangan -->
                         <div class="mb-3">
-                            <strong>Keterangan:</strong>
+                            <label>Keterangan:</label>
                             <p class="form-control">{{ $data->keterangan ?? '-' }}</p>
                         </div>
 
-                        <a href="{{ route('barang.edit', $data->id) }}" class="btn btn-primary mb-3">Edit</a>
+                        <!-- Preview Gambar -->
+                        <div class="mt-2 mb-3">
+                            <label class="d-block">Gambar:</label>
+                            <img id="preview-image" src="{{ isset($data) && $data->gambar ? asset('storage/' . $data->gambar) : asset('image/placeholder.jpg') }}" alt="Preview Gambar" width="150" class="img-thumbnail">
+                        </div>
+
+                        <a href="{{ route('barang.edit', $data->id) }}" class="btn btn-primary">Edit</a>
 
                     </div>
 

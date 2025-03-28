@@ -29,12 +29,8 @@ class DatabaseSeeder extends Seeder
             'profile_photo_path' => 'https://avatar.iran.liara.run/public/46',
         ]);
 
-        // $this->call([
-        //     BarangSeeder::class,
-        // ]);
         
-        \App\Models\Barang::factory(20)->create();
-        \App\Models\KategoriBarang::factory(20)->create();
+        \App\Models\Barang::factory(10)->create();
 
     }
 }

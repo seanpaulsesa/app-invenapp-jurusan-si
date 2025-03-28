@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\KategoriBarang;
+
+
 
 class BarangController extends Controller
 {
@@ -43,16 +47,29 @@ class BarangController extends Controller
                 'nama' => 'required',
                 'kategori_id' => 'required',
                 'keterangan' => 'nullable',
+                'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi gambar
             ]);
-
-            // Simpan data barang
-            Barang::create($request->all());
-
+        
+            // Simpan data barang terlebih dahulu tanpa gambar
+            $barang = Barang::create($request->only(['nama', 'kategori_id', 'keterangan']));
+        
+            // Cek apakah ada file gambar yang diunggah
+            if ($request->hasFile('gambar')) {
+                // Buat folder berdasarkan ID barang
+                $folderPath = 'uploads/barang/' . $barang->id;
+        
+                // Simpan gambar ke folder yang sesuai
+                $gambarPath = $request->file('gambar')->store($folderPath, 'public');
+        
+                // Simpan path gambar ke database
+                $barang->update(['gambar' => $gambarPath]);
+            }
+        
             // Redirect dengan pesan sukses
             return redirect()->route('barang')->with('success', 'Barang berhasil ditambahkan');
         } catch (\Exception $e) {
             // Redirect dengan pesan error jika gagal menyimpan
-            return redirect()->route('barang')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -79,12 +96,35 @@ class BarangController extends Controller
                 'nama' => 'required',
                 'kategori_id' => 'required',
                 'keterangan' => 'nullable',
+                'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi gambar
             ]);
-
-            // Update data barang
-            $data = Barang::findOrFail($id);
-            $data->update($request->all());
-
+        
+            // Ambil data barang berdasarkan ID
+            $barang = Barang::findOrFail($id);
+        
+            // Ambil data yang diperbolehkan untuk update
+            $updateData = $request->only(['nama', 'kategori_id', 'keterangan']);
+        
+            // Cek apakah ada file gambar baru yang diunggah
+            if ($request->hasFile('gambar')) {
+                // Hapus gambar lama jika ada
+                if ($barang->gambar) {
+                    Storage::disk('public')->delete($barang->gambar);
+                }
+        
+                // Tentukan folder berdasarkan ID barang
+                $folderPath = 'uploads/barang/' . $barang->id;
+        
+                // Simpan gambar baru ke dalam folder barang/{id}
+                $gambarPath = $request->file('gambar')->store($folderPath, 'public');
+        
+                // Simpan path gambar ke database
+                $updateData['gambar'] = $gambarPath;
+            }
+        
+            // Update data barang di database
+            $barang->update($updateData);
+        
             // Redirect dengan pesan sukses
             return redirect()->route('barang.edit', $id)->with('success', 'Data barang berhasil diperbarui');
         } catch (\Exception $e) {
@@ -112,7 +152,12 @@ class BarangController extends Controller
         try {
             // Temukan data barang berdasarkan ID
             $data = Barang::findOrFail($id);
-            
+
+            // Hapus gambar dari storage jika ada
+            if ($data->gambar) {
+                Storage::disk('public')->delete($data->gambar);
+            }
+
             // Hapus data secara permanen
             $data->delete();
 

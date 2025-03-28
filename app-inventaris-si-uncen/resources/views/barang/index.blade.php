@@ -41,6 +41,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Barang</th>
+                                            <th width="100px">Gambar</th>
                                             <th>Kategori</th>
                                             <th>Keterangan</th>
                                             <th></th>
@@ -52,6 +53,14 @@
                                             <tr>
                                                 <td></td>
                                                 <td>{{ $data->nama }}</td>
+                                                <td> 
+                                                @if($data->gambar)
+                                                    <img src="{{ asset('storage/' . $data->gambar) }}" alt="Gambar" width="100%">
+                                                @else 
+                                                    <img src="{{ asset('image/placeholder.jpg') }}" alt="Gambar Default" width="100%">
+                                                @endif
+
+                                                </td>
                                                 <td>{{ $data->kategori->nama_kategori }}</td>
                                                 <td>{{ $data->keterangan }}</td>
                                                 <td>
@@ -167,7 +176,7 @@
 
             // Event untuk filter kategori
             $('#filterKategori').on('change', function () {
-                table.column(2).search(this.value).draw();
+                table.column(3).search(this.value).draw();
             });
         });
     </script>

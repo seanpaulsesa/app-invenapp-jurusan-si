@@ -34,7 +34,7 @@
                         <div class="card-body">
                             
                         
-                        <form action="{{ isset($data) ? route('barang.update', $data->id) : route('barang.store') }}" method="POST">
+                        <form action="{{ isset($data) ? route('barang.update', $data->id) : route('barang.store') }}" method="POST"  enctype="multipart/form-data">
                             @csrf
                             @if(isset($data))
                                 @method('PUT')
@@ -65,8 +65,26 @@
                                 <textarea class="form-control" id="keterangan" name="keterangan" rows="3">{{ $data->keterangan ?? '' }}</textarea>
                             </div>
 
+                            <!-- Upload Gambar -->
+                            <div class="mb-3">
+                                <label for="gambar" class="form-label">Upload Gambar</label>
+                                <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*" onchange="previewImage(event)">
+
+                                <!-- Spinner Loading -->
+                                <div id="loading-spinner" class="mt-2" style="display: none;">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Preview Gambar -->
+                                <div class="mt-2">
+                                    <img id="preview-image" src="{{ isset($data) && $data->gambar ? asset('storage/' . $data->gambar) : asset('image/placeholder.jpg') }}" alt="Preview Gambar" width="150" class="img-thumbnail">
+                                </div>
+                            </div>
+
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary mb-3">Simpan</button>
                         </form>
 
                         </div>
@@ -89,6 +107,30 @@
 @push('scripts')
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+            var spinner = document.getElementById('loading-spinner');
+            var imgElement = document.getElementById('preview-image');
+
+            // Tampilkan spinner & sembunyikan gambar sementara
+            spinner.style.display = 'block';
+            imgElement.style.display = 'none';
+
+            reader.onload = function(){
+                setTimeout(function() { // Tunggu 1 detik sebelum menampilkan gambar
+                    spinner.style.display = 'none';
+                    imgElement.src = reader.result;
+                    imgElement.style.display = 'block';
+                }, 500);
+            };
+
+            reader.readAsDataURL(input.files[0]); // Baca file sebagai URL
+        }
+    </script>
+
     <script>
         $(document).ready(function () {
             $('#dataTable tbody tr').each(function (index) {
