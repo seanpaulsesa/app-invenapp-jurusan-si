@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KetuaJurusanController;
 use App\Http\Controllers\StafJurusanController;
+// barang
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriBarangController;
+// ruangan
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\KategoriRuanganController;
 
@@ -58,12 +60,11 @@ Route::middleware([
     Route::prefix('ruangan')->group(function () {
         Route::get('/', [RuanganController::class, 'index'])->name('ruangan');
         Route::get('/create', [RuanganController::class, 'create'])->name('ruangan.create');
-        Route::post('/show', [RuanganController::class, 'show'])->name('ruangan.show');
         Route::post('/store', [RuanganController::class, 'store'])->name('ruangan.store');
+        Route::get('/show/{id}', [RuanganController::class, 'show'])->name('ruangan.show');
         Route::get('/edit/{id}', [RuanganController::class, 'edit'])->name('ruangan.edit');
         Route::put('/update/{id}', [RuanganController::class, 'update'])->name('ruangan.update');
-        Route::get('/destroy/{id}', [RuanganController::class, 'destroy'])->name('ruangan.destroy');
-        Route::get('/hapus/{id}', [RuanganController::class, 'hapus'])->name('ruangan.hapus');
+        Route::delete('/destroy/{id}', [RuanganController::class, 'destroy'])->name('ruangan.destroy');
     });
 
     // prefix kategori ruangan
@@ -71,9 +72,10 @@ Route::middleware([
         Route::get('/', [KategoriRuanganController::class, 'index'])->name('kategori-ruangan');
         Route::get('/create', [KategoriRuanganController::class, 'create'])->name('kategori-ruangan.create');
         Route::post('/store', [KategoriRuanganController::class, 'store'])->name('kategori-ruangan.store');
+        Route::get('/show/{id}', [KategoriRuanganController::class, 'show'])->name('kategori-ruangan.show');
         Route::get('/edit/{id}', [KategoriRuanganController::class, 'edit'])->name('kategori-ruangan.edit');
         Route::put('/update/{id}', [KategoriRuanganController::class, 'update'])->name('kategori-ruangan.update');
-        Route::get('/hapus/{id}', [KategoriRuanganController::class, 'hapus'])->name('kategori-ruangan.hapus');
+        Route::delete('/destroy/{id}', [KategoriRuanganController::class, 'destroy'])->name('kategori-ruangan.destroy');
     });
 
 
