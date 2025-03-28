@@ -20,15 +20,16 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Kategori Barang</h1>
-                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p>
+                    <h1 class="h3 mb-2 text-gray-800">{{ $pageTitle ?? 'page title' }}</h1>
+                    <p class="mb-4">{{ $pageDescription ?? 'page description' }}</p>
 
+                    @include('layouts.allerts')
+                    
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Tabel Data Barang</h6>
+                            <a href="{{ route('kategori-barang.create') }}" class="btn btn-primary btn-sm mb-3">Tambah Kategori Barang</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -50,14 +51,15 @@
                                                 <td>{{ $data->keterangan }}</td>
                                                 <td>
                                                     <!-- view button -->
-                                                    <a href="{{ route('ruangan.show', $data->id) }}" class="btn btn-info btn-sm">View</a>
+                                                    <a href="{{ route('kategori-barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a>
                                                     <!-- edit and delete buttons -->
-                                                    <a href="{{ route('ruangan.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                                    <form action="{{ route('ruangan.destroy', $data->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
+                                                    <a href="{{ route('kategori-barang.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                                    
+                                                    <!-- Tombol Hapus -->
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('kategori-barang.destroy', $data->id) }}')">
+                                                        Hapus
+                                                    </button>
+
                                                 </td>
                                             </tr>
                                         @empty
@@ -67,6 +69,33 @@
                                         @endforelse
                                     </tbody>
                                 </table>
+
+                                <!-- Modal Konfirmasi Hapus -->
+                                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus kategori barang ini secara permanen? <b>Tindakan ini tidak dapat dibatalkan setelah Anda klik tombol Hapus</b>.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                <form id="deleteForm" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -87,6 +116,17 @@
 @push('scripts')
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS (Pastikan ini setelah jQuery) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function confirmDelete(url) {
+            $('#deleteForm').attr('action', url);
+            $('#deleteModal').modal('show');
+        }
+    </script>
+
     <script>
         $(document).ready(function () {
             $('#dataTable tbody tr').each(function (index) {

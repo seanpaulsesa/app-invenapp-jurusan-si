@@ -29,12 +29,12 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Formulir Tambah Data Barang</h6>
-                            <a href="{{ route('barang') }}" class="btn btn-primary btn-sm mb-3">Kembali</a>
+                            <a href="{{ route('kategori-barang') }}" class="btn btn-primary btn-sm mb-3">Kembali</a>
                         </div>
                         <div class="card-body">
                             
                         
-                        <form action="{{ isset($data) ? route('barang.update', $data->id) : route('barang.store') }}" method="POST"  enctype="multipart/form-data">
+                        <form action="{{ isset($data) ? route('kategori-barang.update', $data->id) : route('kategori-barang.store') }}" method="POST"  enctype="multipart/form-data">
                             @csrf
                             @if(isset($data))
                                 @method('PUT')
@@ -42,21 +42,8 @@
 
                             <!-- Nama Barang -->
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Nama Barang</label>
-                                <input type="text" class="form-control" id="nama" name="nama" value="{{ $data->nama ?? '' }}" required>
-                            </div>
-
-                            <!-- Kategori Barang -->
-                            <div class="mb-3">
-                                <label for="kategori_id" class="form-label">Kategori Barang</label>
-                                <select class="form-control" id="kategori_id" name="kategori_id" required>
-                                    <option value="">-- Pilih Kategori --</option>
-                                    @foreach($kategoriBarang as $item)
-                                        <option value="{{ $item->id }}" {{ isset($data) && $data->kategori_id == $item->id ? 'selected' : '' }}>
-                                            {{ $item->nama_kategori }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label for="nama_kategori" class="form-label">Nama Kategori Barang</label>
+                                <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" value="{{ $data->nama_kategori ?? '' }}" required>
                             </div>
 
                             <!-- Keterangan -->
@@ -65,27 +52,9 @@
                                 <textarea class="form-control" id="keterangan" name="keterangan" rows="3">{{ $data->keterangan ?? '' }}</textarea>
                             </div>
 
-                            <!-- Upload Gambar -->
-                            <div class="mb-3">
-                                <label for="gambar" class="form-label">Upload Gambar</label>
-                                <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*" onchange="previewImage(event)">
-
-                                <!-- Spinner Loading -->
-                                <div id="loading-spinner" class="mt-2" style="display: none;">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                </div>
-
-                                <!-- Preview Gambar -->
-                                <div class="mt-2">
-                                    <img id="preview-image" src="{{ isset($data) && $data->gambar ? asset('storage/' . $data->gambar) : asset('image/placeholder.jpg') }}" alt="Preview Gambar" width="150" class="img-thumbnail">
-                                </div>
-                            </div>
-
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('barang') }}" class="btn btn-outline-primary">Kembali</a>
+                            <a href="{{ route('kategori-barang') }}" class="btn btn-outline-primary">Kembali</a>
 
                         </form>
 

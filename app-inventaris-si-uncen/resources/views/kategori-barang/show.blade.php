@@ -20,8 +20,8 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">{{ $pageTitle }}</h1>
-                    <p class="mb-4">{{ $pageDescription }}</p>
+                    <h1 class="h3 mb-2 text-gray-800">{{ $pageTitle ?? 'page title' }}</h1>
+                    <p class="mb-4">{{ $pageDescription ?? 'page description' }}</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -31,16 +31,10 @@
                         </div>
                         <div class="card-body">
                             
-                        <!-- Nama Barang -->
+                        <!-- Nama Kategori Barang -->
                         <div class="mb-3">
-                            <label>Nama Barang:</label>
-                            <p class="form-control">{{ $data->nama }}</p>
-                        </div>
-
-                        <!-- Kategori Barang -->
-                        <div class="mb-3">
-                            <label>Kategori:</label>
-                            <p class="form-control">{{ $data->kategori->nama_kategori }}</p>
+                            <label>Nama Kategori Barang:</label>
+                            <p class="form-control">{{ $data->nama_kategori }}</p>
                         </div>
 
                         <!-- Keterangan -->
@@ -49,14 +43,8 @@
                             <p class="form-control">{{ $data->keterangan ?? '-' }}</p>
                         </div>
 
-                        <!-- Preview Gambar -->
-                        <div class="mt-2 mb-3">
-                            <label class="d-block">Gambar:</label>
-                            <img id="preview-image" src="{{ isset($data) && $data->gambar ? asset('storage/' . $data->gambar) : asset('image/placeholder.jpg') }}" alt="Preview Gambar" width="150" class="img-thumbnail">
-                        </div>
-
-                        <a href="{{ route('barang.edit', $data->id) }}" class="btn btn-primary">Edit</a>
-                        <a href="{{ route('barang') }}" class="btn btn-outline-primary">Kembali</a>
+                        <a href="{{ route('kategori-barang.edit', $data->id) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('kategori-barang') }}" class="btn btn-outline-primary">Kembali</a>
 
                     </div>
 

@@ -12,6 +12,7 @@ use App\Models\KategoriBarang;
 
 class BarangController extends Controller
 {
+    // index
     public function index()
     {
         // mengambil semua data barang untuk ditampilkan pada tabel barang
@@ -27,6 +28,7 @@ class BarangController extends Controller
         return view('barang.index', compact('pageTitle','pageDescription','datas', 'kategoriBarang'));
     }
 
+    // create
     public function create()
     {
         // mengambil semua data kategori barang untuk ditampilkan pada dropdown/select kategori barang
@@ -39,6 +41,7 @@ class BarangController extends Controller
         return view('barang.form', compact('pageTitle','pageDescription','kategoriBarang'));
     }
 
+    // store
     public function store(Request $request)
     {
         try {
@@ -73,6 +76,7 @@ class BarangController extends Controller
         }
     }
 
+    // edit
     public function edit($id)
     {
         // mengambil data barang berdasarkan id yang dikirimkan di url
@@ -88,6 +92,7 @@ class BarangController extends Controller
         return view('barang.form', compact('pageTitle','pageDescription','data', 'kategoriBarang'));
     }
 
+    // update
     public function update(Request $request, $id)
     {
         try {
@@ -146,7 +151,7 @@ class BarangController extends Controller
         return view('barang.show', compact('pageTitle','pageDescription','data'));
     }
 
-    // delete
+    // destroy
     public function destroy($id)
     {
         try {

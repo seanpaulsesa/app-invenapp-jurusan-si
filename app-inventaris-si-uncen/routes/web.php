@@ -48,9 +48,10 @@ Route::middleware([
         Route::get('/', [KategoriBarangController::class, 'index'])->name('kategori-barang');
         Route::get('/create', [KategoriBarangController::class, 'create'])->name('kategori-barang.create');
         Route::post('/store', [KategoriBarangController::class, 'store'])->name('kategori-barang.store');
+        Route::get('/show/{id}', [KategoriBarangController::class, 'show'])->name('kategori-barang.show');
         Route::get('/edit/{id}', [KategoriBarangController::class, 'edit'])->name('kategori-barang.edit');
-        Route::post('/update/{id}', [KategoriBarangController::class, 'update'])->name('kategori-barang.update');
-        Route::get('/hapus/{id}', [KategoriBarangController::class, 'hapus'])->name('kategori-barang.hapus');
+        Route::put('/update/{id}', [KategoriBarangController::class, 'update'])->name('kategori-barang.update');
+        Route::delete('/destroy/{id}', [KategoriBarangController::class, 'destroy'])->name('kategori-barang.destroy');
     });
 
     // prefix ruangan
@@ -60,7 +61,7 @@ Route::middleware([
         Route::post('/show', [RuanganController::class, 'show'])->name('ruangan.show');
         Route::post('/store', [RuanganController::class, 'store'])->name('ruangan.store');
         Route::get('/edit/{id}', [RuanganController::class, 'edit'])->name('ruangan.edit');
-        Route::post('/update/{id}', [RuanganController::class, 'update'])->name('ruangan.update');
+        Route::put('/update/{id}', [RuanganController::class, 'update'])->name('ruangan.update');
         Route::get('/destroy/{id}', [RuanganController::class, 'destroy'])->name('ruangan.destroy');
         Route::get('/hapus/{id}', [RuanganController::class, 'hapus'])->name('ruangan.hapus');
     });
@@ -71,7 +72,7 @@ Route::middleware([
         Route::get('/create', [KategoriRuanganController::class, 'create'])->name('kategori-ruangan.create');
         Route::post('/store', [KategoriRuanganController::class, 'store'])->name('kategori-ruangan.store');
         Route::get('/edit/{id}', [KategoriRuanganController::class, 'edit'])->name('kategori-ruangan.edit');
-        Route::post('/update/{id}', [KategoriRuanganController::class, 'update'])->name('kategori-ruangan.update');
+        Route::put('/update/{id}', [KategoriRuanganController::class, 'update'])->name('kategori-ruangan.update');
         Route::get('/hapus/{id}', [KategoriRuanganController::class, 'hapus'])->name('kategori-ruangan.hapus');
     });
 
