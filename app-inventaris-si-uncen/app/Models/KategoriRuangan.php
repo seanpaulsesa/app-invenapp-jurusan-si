@@ -11,7 +11,7 @@ class KategoriRuangan extends Model
 
     protected $table = 'kategori_ruangan';
 
-    protected $fillable = ['nama_kategori', 'keterangan'];
+    protected $guarded = [];
 
     public function ruangan()
     {

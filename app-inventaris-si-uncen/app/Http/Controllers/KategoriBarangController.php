@@ -4,28 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KategoriBarang;
+use Illuminate\Support\Str;
 
 class KategoriBarangController extends Controller
 {
+    public $pageIcon;
+    public $contentTitle;
+
+    public function __construct()
+    {
+        $this->pageIcon = "fas fa-folder";
+        $this->contentTitle = "Kategori Barang";
+    }
+
     // index
     public function index()
     {
-        $datas = KategoriBarang::all();// Halaman Kategori Barang
+        $datas = KategoriBarang::orderBy('nama_kategori','asc')->get();// Halaman Kategori Barang
 
-        $pageTitle = "Kategori Barang";
-        $pageDescription = "Lihat dan kelola daftar kategori barang. Gunakan fitur pencarian dan filter untuk menemukan kategori dengan mudah.";
-
-        return view('kategori-barang.index', compact('pageTitle', 'pageDescription', 'datas'));
+        return view('kategori-barang.index', [
+            'pageTitle' => Str::ucfirst($this->contentTitle),
+            'pageDescription' => 'Mengatur semua data ' . Str::lower($this->contentTitle) . ': buat baru, tampilkan detail, ubah data, arsipkan, hapus permanen, dan pulihkan.',
+            'pageIcon' => $this->pageIcon,
+            'datas' => $datas,
+            'i' => (request()->input('page', 1) - 1) * 5,
+        ]);
     }
 
     // create
     public function create()
     {
-        // Judul dan deskripsi halaman
-        $pageTitle = "Tambah Kategori Barang";
-        $pageDescription = "Silakan tambahkan kategori barang baru dengan mengisi formulir di bawah ini. Pastikan semua informasi yang dimasukkan sudah benar sebelum disimpan.";
-
-        return view('kategori-barang.form', compact('pageTitle', 'pageDescription'));
+        return view('kategori-barang.form', [
+            'pageTitle' => 'Tambah ' . Str::ucfirst($this->contentTitle),
+            'pageDescription' => 'Formulir tambah data ' . Str::lower($this->contentTitle),
+            'pageIcon' => $this->pageIcon,
+        ]);
 
 
     }// store
@@ -42,26 +55,36 @@ class KategoriBarangController extends Controller
             $barang = KategoriBarang::create($request->only(['nama_kategori', 'keterangan']));
         
             // Redirect dengan pesan sukses
-            return redirect()->route('kategori-barang')->with('success', 'Kategori barang berhasil ditambahkan');
+            return redirect()->route('kategori-barang')->with('success', Str::ucfirst($this->contentTitle) . ' berhasil ditambahkan');
+
         } catch (\Exception $e) {
             // Redirect dengan pesan error jika gagal menyimpan
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
-    
-
-    // edit
-    public function edit($id)
+    public function show($id)
     {
-        // mengambil data kategori barang berdasarkan id yang dikirimkan di url
         $data = KategoriBarang::findOrFail($id);
 
-        // Halaman Ubah Kategori Barang
-        $pageTitle = "Ubah Kategori Barang";
-        $pageDescription = "Edit informasi kategori barang yang sudah ada. Perbarui nama atau deskripsi sesuai kebutuhan.";
+        return view('kategori-barang.show', [
+            'pageTitle' => 'Detail ' . Str::ucfirst($this->contentTitle),
+            'pageDescription' => 'Detail informasi dari ' . Str::lower($this->contentTitle),
+            'data' => $data,
+            'pageIcon' => $this->pageIcon,
+        ]);
+    }
 
-        return view('kategori-barang.form', compact('pageTitle','pageDescription','data'));
+    public function edit($id)
+    {
+        $data = KategoriBarang::findOrFail($id);
+
+        return view('kategori-barang.form', [
+            'pageTitle' => 'Edit ' . Str::ucfirst($this->contentTitle),
+            'pageDescription' => 'Edit informasi dari ' . Str::lower($this->contentTitle),
+            'data' => $data,
+            'pageIcon' => $this->pageIcon,
+        ]);
     }
 
     // update
@@ -84,25 +107,13 @@ class KategoriBarangController extends Controller
             $barang->update($updateData);
         
             // Redirect dengan pesan sukses
-            return redirect()->route('kategori-barang.edit', $id)->with('success', 'Data barang berhasil diperbarui');
+            return redirect()->back()->with('success', Str::ucfirst($this->contentTitle) . ' berhasil diperbarui');
         } catch (\Exception $e) {
             // Redirect dengan pesan error jika gagal memperbarui
-            return redirect()->route('kategori-barang.edit', $id)->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
     
-    // show
-    public function show($id)
-    {
-        // mengambil data kategori barang berdasarkan id yang dikirimkan di url
-        $data = KategoriBarang::findOrFail($id);
-
-        // Halaman Detail Kategori Barang
-        $pageTitle = "Detail Kategori Barang";
-        $pageDescription = "Lihat informasi lengkap tentang kategori barang, termasuk daftar barang yang termasuk dalam kategori ini.";
-
-        return view('kategori-barang.show', compact('pageTitle','pageDescription','data'));
-    }
 
     // destroy
     public function destroy($id)
@@ -114,9 +125,9 @@ class KategoriBarangController extends Controller
             // Hapus data secara permanen
             $data->delete();
 
-            return redirect()->route('kategori-barang')->with('success', 'Kategori Barang berhasil dihapus secara permanen dari database');
+            return redirect()->back()->with('success', Str::ucfirst($this->contentTitle) . ' berhasil dihapus secara permanen dari database');
         } catch (\Exception $e) {
-            return redirect()->route('kategori-barang')->with('error', 'Gagal menghapus Kategori Barang: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus '. Str::lower($this->contentTitle) .': ' . $e->getMessage());
         }
     }
 

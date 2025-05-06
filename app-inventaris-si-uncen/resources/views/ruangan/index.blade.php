@@ -57,7 +57,7 @@
                                                 @if($data->gambar)
                                                     <img src="{{ asset('storage/' . $data->gambar) }}" alt="Gambar" width="100%">
                                                 @else 
-                                                    <img src="{{ asset('image/placeholder.jpg') }}" alt="Gambar Default" width="100%">
+                                                    <img src="{{ asset('image/image-placeholder.png') }}" alt="Gambar Default" width="100%">
                                                 @endif
 
                                                 </td>
@@ -65,7 +65,7 @@
                                                 <td>{{ $data->keterangan }}</td>
                                                 <td>
                                                     <!-- view button -->
-                                                    <a href="{{ route('ruangan.show', $data->id) }}" class="btn btn-info btn-sm">View</a>
+                                                    {{-- <a href="{{ route('ruangan.show', $data->id) }}" class="btn btn-info btn-sm">View</a> --}}
                                                     <!-- edit and delete buttons -->
                                                     <a href="{{ route('ruangan.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                                     

@@ -34,18 +34,25 @@
                                         <div class="mb-3">{{  env('APP_NAME') }}</div>
                                         <h1 class="h4 text-gray-900 mb-4">Login</h1>
                                     </div>
-                                    <form method="POST" action="/login" class="user">
+
+                                    <form method="POST" action="{{ route('login') }}" class="user">
+                                    @csrf
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="form-group">
                                             <label for="email" class="form-label">Email</label>
-                                            <input id="email" type="email" name="email" class="form-control form-control-user" required autofocus>
+                                            <input id="email" type="email" name="email" class="form-control form-control-user" autofocus>
+                                            @error('email')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror   
                                         </div>
                                         <div class="form-group">
                                             <label for="password" class="form-label">Password</label>
-                                            <input id="password" type="password" name="password" class="form-control form-control-user" required>
+                                            <input id="password" type="password" name="password" class="form-control form-control-user">
+                                            @error('password')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror   
                                         </div>
                                         <hr>
-                                        <a href="{{ route('register') }}">Register</a>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">Log in</button>
                                     </form>
                                 </div>

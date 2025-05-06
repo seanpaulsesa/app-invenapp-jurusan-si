@@ -54,7 +54,7 @@
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('kategori-ruangan') }}" class="btn btn-outline-primary">Kembali</a>
+                            <a href="{{ route('kategori-ruangan') }}" class="btn btn-outline-primary">Tutup</a>
 
                         </form>
 

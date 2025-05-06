@@ -17,9 +17,6 @@ class BarangFactory extends Factory
                 'Laptop', 'Proyektor', 'Buku Teks', 'Pulpen & Pensil', 'Meja & Kursi Kuliah', 
                 'Tas Ransel', 'Helm', 'Tumbler Minum', 'Mikroskop', 'Jaket Almamater'
             ]),
-            'gambar' => $this->faker->randomElement([
-                '',
-            ]),
             'kategori_id' => KategoriBarang::factory(), // Relasi otomatis dengan kategori
             'keterangan' => $this->faker->sentence(),
         ];

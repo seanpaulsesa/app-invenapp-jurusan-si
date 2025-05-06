@@ -15,6 +15,7 @@ Route::get('/', function () {
 })->name('login');
 
 Route::get('/ketua-jurusan', [KetuaJurusanController::class, 'index']);
+
 Route::get('/staf-jurusan', [StafJurusanController::class, 'index']);
 
 
@@ -24,6 +25,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+
     Route::get('/dashboard', function () {
         return redirect()->route('beranda');
     })->name('dashboard');

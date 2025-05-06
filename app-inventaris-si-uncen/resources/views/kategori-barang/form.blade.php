@@ -43,7 +43,12 @@
                             <!-- Nama Barang -->
                             <div class="mb-3">
                                 <label for="nama_kategori" class="form-label">Nama Kategori Barang</label>
-                                <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" value="{{ $data->nama_kategori ?? '' }}" required>
+                                <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" value="{{ $data->nama_kategori ?? '' }}">
+                                @if ($errors->has('nama_kategori'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('nama_kategori') }}
+                                    </div>
+                                @endif
                             </div>
 
                             <!-- Keterangan -->
@@ -54,7 +59,7 @@
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('kategori-barang') }}" class="btn btn-outline-primary">Kembali</a>
+                            <a href="{{ route('kategori-barang') }}" class="btn btn-outline-primary">Tutup</a>
 
                         </form>
 

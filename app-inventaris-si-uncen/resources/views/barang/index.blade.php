@@ -43,7 +43,12 @@
                                             <th>Nama Barang</th>
                                             <th width="100px">Gambar</th>
                                             <th>Kategori</th>
+                                            <th>Satuan</th>
+                                            <th>Jumlah Satuan</th>
+                                            <th>Harga Satuan</th>
+                                            <th>Jumlah Harga</th>
                                             <th>Keterangan</th>
+                                            <th>Terakhir Diubah</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -57,15 +62,20 @@
                                                 @if($data->gambar)
                                                     <img src="{{ asset('storage/' . $data->gambar) }}" alt="Gambar" width="100%">
                                                 @else 
-                                                    <img src="{{ asset('image/placeholder.jpg') }}" alt="Gambar Default" width="100%">
+                                                    <img src="{{ asset('image/image-placeholder.png') }}" alt="Gambar Default" width="100%">
                                                 @endif
 
                                                 </td>
                                                 <td>{{ $data->kategori->nama_kategori }}</td>
+                                                <td>{{ $data->satuan }}</td>
+                                                <td>{{ $data->jumlah_satuan }}</td>
+                                                <td>Rp.{{ number_format($data->harga_satuan, 0, ',', '.') }},-</td>
+                                                <td>Rp.{{ number_format($data->jumlah_harga, 0, ',', '.') }},-</td>
                                                 <td>{{ $data->keterangan }}</td>
+                                                <td>{{ $data->updated_at->diffForHumans() }} <br/> {{ $data->updated_at->translatedFormat('l, d F Y') }}</td>
                                                 <td>
                                                     <!-- view button -->
-                                                    <a href="{{ route('barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a>
+                                                    {{-- <a href="{{ route('barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a> --}}
                                                     <!-- edit and delete buttons -->
                                                     <a href="{{ route('barang.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                                     

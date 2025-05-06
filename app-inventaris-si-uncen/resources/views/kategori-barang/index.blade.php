@@ -51,7 +51,7 @@
                                                 <td>{{ $data->keterangan }}</td>
                                                 <td>
                                                     <!-- view button -->
-                                                    <a href="{{ route('kategori-barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a>
+                                                    {{-- <a href="{{ route('kategori-barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a> --}}
                                                     <!-- edit and delete buttons -->
                                                     <a href="{{ route('kategori-barang.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                                     

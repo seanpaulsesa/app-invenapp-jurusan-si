@@ -43,13 +43,13 @@
                             <!-- Nama Barang -->
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Barang</label>
-                                <input type="text" class="form-control" id="nama" name="nama" value="{{ $data->nama ?? '' }}" required>
+                                <input type="text" class="form-control" id="nama" name="nama" value="{{ $data->nama ?? '' }}">
                             </div>
 
                             <!-- Kategori Barang -->
                             <div class="mb-3">
                                 <label for="kategori_id" class="form-label">Kategori Barang</label>
-                                <select class="form-control" id="kategori_id" name="kategori_id" required>
+                                <select class="form-control" id="kategori_id" name="kategori_id">
                                     <option value="">-- Pilih Kategori --</option>
                                     @foreach($kategoriBarang as $item)
                                         <option value="{{ $item->id }}" {{ isset($data) && $data->kategori_id == $item->id ? 'selected' : '' }}>
@@ -57,6 +57,24 @@
                                         </option>
                                     @endforeach
                                 </select>
+                            </div>
+
+                            <!-- Satuan -->
+                            <div class="mb-3">
+                                <label for="satuan" class="form-label">Satuan</label>
+                                <input type="text" class="form-control" id="satuan" name="satuan" value="{{ $data->satuan ?? '' }}">
+                            </div>
+
+                            <!-- Jumlah Satuan -->
+                            <div class="mb-3">
+                                <label for="jumlah_satuan" class="form-label">Jumlah Satuan</label>
+                                <input type="number" class="form-control" id="jumlah_satuan" name="jumlah_satuan" value="{{ $data->jumlah_satuan ?? '' }}">
+                            </div>
+
+                            <!-- Harga Satuan -->
+                            <div class="mb-3">
+                                <label for="harga_satuan" class="form-label">Harga Satuan</label>
+                                <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" value="{{ $data->harga_satuan ?? '' }}">
                             </div>
 
                             <!-- Keterangan -->
@@ -67,7 +85,13 @@
 
                             <!-- Upload Gambar -->
                             <div class="mb-3">
-                                <label for="gambar" class="form-label">Upload Gambar</label>
+
+                                <label for="gambar" class="form-label">Gambar</label>
+                                <!-- Preview Gambar -->
+                                <div class="mb-2">
+                                    <img id="preview-image" src="{{ isset($data) && $data->gambar ? asset('storage/' . $data->gambar) : asset('image/image-placeholder.png') }}" alt="Preview Gambar" width="150" class="img-thumbnail">
+                                </div>
+
                                 <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*" onchange="previewImage(event)">
 
                                 <!-- Spinner Loading -->
@@ -76,16 +100,11 @@
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                 </div>
-
-                                <!-- Preview Gambar -->
-                                <div class="mt-2">
-                                    <img id="preview-image" src="{{ isset($data) && $data->gambar ? asset('storage/' . $data->gambar) : asset('image/placeholder.jpg') }}" alt="Preview Gambar" width="150" class="img-thumbnail">
-                                </div>
                             </div>
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('barang') }}" class="btn btn-outline-primary">Kembali</a>
+                            <a href="{{ route('barang') }}" class="btn btn-outline-primary">Tutup</a>
 
                         </form>
 

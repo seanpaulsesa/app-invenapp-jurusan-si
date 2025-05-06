@@ -15,8 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('gambar')->nullable();
+
+            $table->string('satuan')->nullable();
+            $table->string('harga_satuan')->nullable();
+            $table->string('jumlah_satuan')->nullable();
+            $table->string('jumlah_harga')->nullable();
+
             $table->unsignedBigInteger('kategori_id'); // Harus unsignedBigInteger untuk foreign key
             $table->text('keterangan')->nullable();
+            
             $table->timestamps();
 
             // Tambahkan foreign key constraint

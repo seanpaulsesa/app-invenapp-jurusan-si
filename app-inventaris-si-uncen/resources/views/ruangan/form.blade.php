@@ -68,6 +68,12 @@
                             <!-- Upload Gambar -->
                             <div class="mb-3">
                                 <label for="gambar" class="form-label">Upload Gambar</label>
+
+                                <!-- Preview Gambar -->
+                                <div class="mb-2">
+                                    <img id="preview-image" src="{{ isset($data) && $data->gambar ? asset('storage/' . $data->gambar) : asset('image/image-placeholder.png') }}" alt="Preview Gambar" width="150" class="img-thumbnail">
+                                </div>
+
                                 <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*" onchange="previewImage(event)">
 
                                 <!-- Spinner Loading -->
@@ -76,16 +82,11 @@
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                 </div>
-
-                                <!-- Preview Gambar -->
-                                <div class="mt-2">
-                                    <img id="preview-image" src="{{ isset($data) && $data->gambar ? asset('storage/' . $data->gambar) : asset('image/placeholder.jpg') }}" alt="Preview Gambar" width="150" class="img-thumbnail">
-                                </div>
                             </div>
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('ruangan') }}" class="btn btn-outline-primary">Kembali</a>
+                            <a href="{{ route('ruangan') }}" class="btn btn-outline-primary">Tutup</a>
 
                         </form>
 
