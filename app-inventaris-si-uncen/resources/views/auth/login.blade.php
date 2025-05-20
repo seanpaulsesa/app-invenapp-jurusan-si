@@ -18,7 +18,7 @@
     <link href="{{ asset('template/css/sb-admin-2.min.css') }}" rel="stylesheet">
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary" style="background-image: url('{{ asset('image/bg-library-2.png') }}'); background-size: cover; background-position: center;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-12 col-md-9">

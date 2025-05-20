@@ -16,6 +16,12 @@ Route::get('/ketua-jurusan', [KetuaJurusanController::class, 'index']);
 Route::get('/staf-jurusan', [StafJurusanController::class, 'index']);
 
 
+Route::get('/', function () {
+        return redirect()->route('login');
+    })->name('landingpage');
+
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
