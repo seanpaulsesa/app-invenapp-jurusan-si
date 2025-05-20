@@ -12,7 +12,7 @@ class BarangSeeder extends Seeder
         $barangs = [
             [
                 'nama' => 'Pensil 2B',
-                'gambar' => 'pensil.jpg',
+                'gambar' => 'seeder-images/barang/pensil-2b.jpg',
                 'satuan' => 'buah',
                 'harga_satuan' => '2000',
                 'jumlah_satuan' => '100',
@@ -22,7 +22,7 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama' => 'Buku Tulis',
-                'gambar' => 'buku.jpg',
+                'gambar' => 'seeder-images/barang/buku-tulis.jpg',
                 'satuan' => 'pak',
                 'harga_satuan' => '15000',
                 'jumlah_satuan' => '50',
@@ -32,7 +32,7 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama' => 'Spidol Hitam',
-                'gambar' => 'spidol.jpg',
+                'gambar' => 'seeder-images/barang/spidol-hitam.jpg',
                 'satuan' => 'buah',
                 'harga_satuan' => '5000',
                 'jumlah_satuan' => '60',
@@ -42,7 +42,7 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama' => 'Map Folder',
-                'gambar' => 'map.jpg',
+                'gambar' => NULL,
                 'satuan' => 'pak',
                 'harga_satuan' => '10000',
                 'jumlah_satuan' => '40',
@@ -52,7 +52,7 @@ class BarangSeeder extends Seeder
             ],
             [
                 'nama' => 'Penghapus',
-                'gambar' => 'penghapus.jpg',
+                'gambar' => NULL,
                 'satuan' => 'buah',
                 'harga_satuan' => '1500',
                 'jumlah_satuan' => '120',

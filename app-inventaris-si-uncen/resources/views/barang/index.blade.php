@@ -58,14 +58,7 @@
                                             <tr>
                                                 <td></td>
                                                 <td>{{ $data->nama }}</td>
-                                                <td> 
-                                                @if($data->gambar)
-                                                    <img src="{{ asset('storage/' . $data->gambar) }}" alt="Gambar" width="100%">
-                                                @else 
-                                                    <img src="{{ asset('image/image-placeholder.png') }}" alt="Gambar Default" width="100%">
-                                                @endif
-
-                                                </td>
+                                                <td><img src="{{ $data->gambar ? asset('storage/' . $data->gambar) : asset('image/image-placeholder.png') }}" alt="Gambar" width="100%"></td>
                                                 <td>{{ $data->kategori->nama_kategori }}</td>
                                                 <td>{{ $data->satuan }}</td>
                                                 <td>{{ $data->jumlah_satuan }}</td>
