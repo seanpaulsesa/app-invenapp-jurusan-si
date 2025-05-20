@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,20 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => bcrypt('test@example.com'),
-            'profile_photo_path' => 'https://avatar.iran.liara.run/public/28',
+            'password' => Hash::make('test@example.com'),
+            'profile_photo_path' => 'image/avatar-man-5.png',
         ]);
 
         User::factory()->create([
-            'name' => 'Paulus Sesa',
-            'email' => 'p.sesa@mail.com',
-            'password' => bcrypt('p.sesa@mail.com'),
-            'profile_photo_path' => 'https://avatar.iran.liara.run/public/46',
+            'name' => 'Admin Master',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('admin@example.com'),
+            'profile_photo_path' => 'image/avatar-man-5.png',
         ]);
 
         

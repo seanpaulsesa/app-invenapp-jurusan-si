@@ -11,34 +11,16 @@ use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\KategoriRuanganController;
 
 
-use App\Http\Controllers\Auth\LoginController;
-
-// Route::get('/', function () {
-//     return view('auth.login');
-// })->name('login');
-
-// Route::post('/', [LoginController::class, 'login']);
-
-
-
-
-// Route::get('/', function () {
-//     return view('auth.login');
-// })->name('login');
-
 Route::get('/ketua-jurusan', [KetuaJurusanController::class, 'index']);
 
 Route::get('/staf-jurusan', [StafJurusanController::class, 'index']);
-
-
-
 
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    ])->group(function () {
+])->group(function () {
 
     Route::get('/dashboard', function () {
         return redirect()->route('beranda');
@@ -94,6 +76,8 @@ Route::middleware([
         Route::delete('/destroy/{id}', [KategoriRuanganController::class, 'destroy'])->name('kategori-ruangan.destroy');
     });
 
+
+    
     
     
 
