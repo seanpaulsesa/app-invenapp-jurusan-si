@@ -76,7 +76,7 @@
         // Fungsi untuk ambil data dari API dan tampilkan chart barang per kategori
         async function loadChart() {
             try {
-            const response = await fetch('http://127.0.0.1:9000/api/chart-barang-per-kategori');
+            const response = await fetch('/api/chart-barang-per-kategori');
             const data = await response.json();
 
             // Transform data ke format ApexCharts: 
@@ -127,7 +127,7 @@
         // Fungsi untuk ambil data dari API dan tampilkan chart ruangan per kategori
         async function loadChart() {
             try {
-                const response = await fetch('http://127.0.0.1:9000/api/chart-ruangan-per-kategori');
+                const response = await fetch('/api/chart-ruangan-per-kategori');
                 const data = await response.json();
 
                 // Transform data ke format ApexCharts: 
