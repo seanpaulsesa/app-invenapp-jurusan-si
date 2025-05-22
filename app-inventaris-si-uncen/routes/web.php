@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\StatistikController;
+
 use App\Http\Controllers\KetuaJurusanController;
 use App\Http\Controllers\StafJurusanController;
 // barang
@@ -32,9 +36,10 @@ Route::middleware([
         return redirect()->route('beranda');
     })->name('dashboard');
 
-    Route::get('/beranda', function () {
-        return view('beranda');
-    })->name('beranda');
+    Route::get('/', [BerandaController::class, 'index'])->name('beranda');
+    Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
+
+    Route::get('/statistik', [StatistikController::class, 'index'])->name('statistik');
 
 
 

@@ -66,15 +66,15 @@
                                                 <td>Rp.{{ number_format($data->jumlah_harga, 0, ',', '.') }},-</td>
                                                 <td>{{ $data->keterangan }}</td>
                                                 <td>{{ $data->updated_at->diffForHumans() }} <br/> {{ $data->updated_at->translatedFormat('l, d F Y') }}</td>
-                                                <td>
+                                                <td class="d-flex justify-content-center">
                                                     <!-- view button -->
                                                     {{-- <a href="{{ route('barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a> --}}
                                                     <!-- edit and delete buttons -->
-                                                    <a href="{{ route('barang.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                                    <a href="{{ route('barang.edit', $data->id) }}" class="btn text-primary btn-sm"><i class="fas fa-edit"></i></a>
                                                     
                                                     <!-- Tombol Hapus -->
-                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('barang.destroy', $data->id) }}')">
-                                                        Hapus
+                                                    <button type="button" class="btn btn-sm" onclick="confirmDelete('{{ route('barang.destroy', $data->id) }}')">
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 </td>
                                             </tr>

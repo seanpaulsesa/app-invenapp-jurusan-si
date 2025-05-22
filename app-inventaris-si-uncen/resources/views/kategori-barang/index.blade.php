@@ -53,11 +53,11 @@
                                                     <!-- view button -->
                                                     {{-- <a href="{{ route('kategori-barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a> --}}
                                                     <!-- edit and delete buttons -->
-                                                    <a href="{{ route('kategori-barang.edit', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                                    <a href="{{ route('kategori-barang.edit', $data->id) }}" class="btn text-primary btn-sm"><i class="fas fa-edit"></i></a>
                                                     
                                                     <!-- Tombol Hapus -->
-                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ route('kategori-barang.destroy', $data->id) }}')">
-                                                        Hapus
+                                                    <button type="button" class="btn btn-sm" onclick="confirmDelete('{{ route('kategori-barang.destroy', $data->id) }}')">
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
 
                                                 </td>

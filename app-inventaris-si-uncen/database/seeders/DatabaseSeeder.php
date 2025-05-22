@@ -39,6 +39,8 @@ class DatabaseSeeder extends Seeder
 
             KategoriBarangSeeder::class,
             BarangSeeder::class,
+            KategoriRuanganSeeder::class,
+            RuanganSeeder::class,
 
         ]);
 

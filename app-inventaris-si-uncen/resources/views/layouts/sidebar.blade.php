@@ -34,14 +34,13 @@
 <li class="nav-item {{ request()->segment(1) == 'statistik' ? 'active' : '' }}">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatistik"
         aria-expanded="true" aria-controls="collapseStatistik">
-        <i class="fas fa-fw fa-box"></i>
+        <i class="fas fa-fw fa-chart-pie"></i>
         <span>Rekapan dan Statistik</span>
     </a>
     <div id="collapseStatistik" class="collapse {{ request()->segment(1) == 'barang' ? 'show' : '' }} {{ request()->segment(1) == 'kategori-barang' ? 'show' : '' }}" 
          aria-labelledby="headingBarang" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item {{ request()->segment(1) == 'statistik' ? 'active' : '' }}" href="{{ url('barang') }}">Rekapan per Bulan</a>
-            <a class="collapse-item {{ request()->segment(1) == 'kategori-barang' ? 'active' : '' }}" href="{{ url('kategori-barang') }}">Rekapan per Tahun</a>
+            <a class="collapse-item {{ request()->segment(1) == 'statistik' ? 'active' : '' }}" href="{{ route('statistik') }}">Rekapan per Bulan</a>
         </div>
     </div>
 </li>
@@ -117,7 +116,7 @@
 
 
 
-
+{{-- 
 
 
 <!-- Heading -->
@@ -147,6 +146,7 @@
 <!-- Divider -->
 <hr class="sidebar-divider">
 
+--}}
 
 
 
