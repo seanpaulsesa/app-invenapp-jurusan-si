@@ -43,7 +43,7 @@
                             <!-- Nama Barang -->
                             <div class="mb-3">
                                 <label for="nama_kategori" class="form-label">Nama Kategori Barang</label>
-                                <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" value="{{ $data->nama_kategori ?? '' }}">
+                                <input type="text" class="form-control @error('nama_kategori') is-invalid @enderror" id="nama_kategori" name="nama_kategori" value="{{ old('nama_kategori', isset($data) ? $data->nama_kategori : '') }}">
                                 @if ($errors->has('nama_kategori'))
                                     <div class="text-danger">
                                         {{ $errors->first('nama_kategori') }}

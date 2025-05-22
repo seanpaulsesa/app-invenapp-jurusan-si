@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\KategoriRuangan;
 
+use Illuminate\Validation\ValidationException;
+
 class KategoriRuanganController extends Controller
 {
     // index
@@ -33,18 +35,25 @@ class KategoriRuanganController extends Controller
     {
         try {
             // Validasi input
-            $request->validate([
-                'nama_kategori' => 'required',
-                'keterangan' => 'nullable',
+            $validated = $request->validate([
+                'nama_kategori' => 'required|string|max:100|unique:kategori_ruangan,nama_kategori',
+                'keterangan' => 'nullable|string|max:255',
             ]);
-        
-            // Simpan data ruangan terlebih dahulu tanpa gambar
-            $ruangan = KategoriRuangan::create($request->only(['nama_kategori', 'keterangan']));
-        
+
+            // Simpan data ke database
+            KategoriRuangan::create($validated);
+
             // Redirect dengan pesan sukses
             return redirect()->route('kategori-ruangan')->with('success', 'Kategori ruangan berhasil ditambahkan');
+
+        } catch (ValidationException $e) {
+            // Jika validasi gagal, kembalikan dengan error dan input sebelumnya
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+
         } catch (\Exception $e) {
-            // Redirect dengan pesan error jika gagal menyimpan
+            // Tangani error umum
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -66,26 +75,34 @@ class KategoriRuanganController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // Validasi input
-            $request->validate([
-                'nama_kategori' => 'required',
-                'keterangan' => 'nullable',
-            ]);
-        
             // Ambil data ruangan berdasarkan ID
             $ruangan = KategoriRuangan::findOrFail($id);
-        
+
+            // Validasi input
+            $request->validate([
+                'nama_kategori' => 'required|string|max:100|unique:kategori_ruangan,nama_kategori,' . $id,
+                'keterangan' => 'nullable|string|max:255',
+            ]);
+
             // Ambil data yang diperbolehkan untuk update
             $updateData = $request->only(['nama_kategori', 'keterangan']);
-        
+
             // Update data ruangan di database
             $ruangan->update($updateData);
-        
+
             // Redirect dengan pesan sukses
             return redirect()->route('kategori-ruangan.edit', $id)->with('success', 'Data ruangan berhasil diperbarui');
+
+        } catch (ValidationException $e) {
+            // Jika validasi gagal
+            return redirect()->route('kategori-ruangan.edit', $id)
+                ->withErrors($e->validator)
+                ->withInput();
+
         } catch (\Exception $e) {
             // Redirect dengan pesan error jika gagal memperbarui
-            return redirect()->route('kategori-ruangan.edit', $id)->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->route('kategori-ruangan.edit', $id)
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
     

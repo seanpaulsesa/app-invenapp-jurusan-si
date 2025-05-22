@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Ruangan;
 use App\Models\KategoriRuangan;
 
+use Illuminate\Validation\ValidationException;
+
 class RuanganController extends Controller
 {
     // index
@@ -34,24 +36,36 @@ class RuanganController extends Controller
     public function store(Request $request)
     {
         try {
+            // Validasi input
             $request->validate([
-                'nama' => 'required',
-                'kategori_id' => 'required',
-                'keterangan' => 'nullable',
+                'nama' => 'required|string|max:100',
+                'kategori_id' => 'required|exists:kategori_ruangan,id',
+                'keterangan' => 'nullable|string|max:255',
                 'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]);
-            
+
+            // Simpan data awal (tanpa gambar)
             $ruangan = Ruangan::create($request->only(['nama', 'kategori_id', 'keterangan']));
-            
+
+            // Proses upload gambar jika ada
             if ($request->hasFile('gambar')) {
                 $folderPath = 'uploads/ruangan/' . $ruangan->id;
                 $gambarPath = $request->file('gambar')->store($folderPath, 'public');
                 $ruangan->update(['gambar' => $gambarPath]);
             }
-            
+
             return redirect()->route('ruangan')->with('success', 'Ruangan berhasil ditambahkan');
+
+        } catch (ValidationException $e) {
+            // Jika validasi gagal
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            // Tangani error lain
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -70,29 +84,43 @@ class RuanganController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // Validasi input dengan aturan lengkap
             $request->validate([
-                'nama' => 'required',
-                'kategori_id' => 'required',
-                'keterangan' => 'nullable',
+                'nama' => 'required|string|max:100',
+                'kategori_id' => 'required|exists:kategori_ruangan,id',
+                'keterangan' => 'nullable|string|max:255',
                 'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]);
-            
+
+            // Cari data ruangan berdasarkan ID
             $ruangan = Ruangan::findOrFail($id);
+
+            // Ambil data yang boleh diupdate
             $updateData = $request->only(['nama', 'kategori_id', 'keterangan']);
-            
+
+            // Jika ada gambar baru, hapus gambar lama dan simpan gambar baru
             if ($request->hasFile('gambar')) {
                 if ($ruangan->gambar) {
                     Storage::disk('public')->delete($ruangan->gambar);
                 }
-                
                 $folderPath = 'uploads/ruangan/' . $ruangan->id;
                 $gambarPath = $request->file('gambar')->store($folderPath, 'public');
                 $updateData['gambar'] = $gambarPath;
             }
-            
+
+            // Update data ruangan
             $ruangan->update($updateData);
+
             return redirect()->route('ruangan.edit', $id)->with('success', 'Data ruangan berhasil diperbarui');
+
+        } catch (ValidationException $e) {
+            // Jika validasi gagal, kembalikan ke form dengan pesan error dan input lama
+            return redirect()->route('ruangan.edit', $id)
+                            ->withErrors($e->validator)
+                            ->withInput();
+
         } catch (\Exception $e) {
+            // Tangani error lainnya
             return redirect()->route('ruangan.edit', $id)->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }

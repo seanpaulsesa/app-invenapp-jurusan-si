@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\KategoriBarang;
 use Illuminate\Support\Str;
 
+use Illuminate\Validation\ValidationException;
+
 class KategoriBarangController extends Controller
 {
     public $pageIcon;
@@ -41,24 +43,31 @@ class KategoriBarangController extends Controller
         ]);
 
 
-    }// store
+    }
+    
+    // store
     public function store(Request $request)
     {
         try {
             // Validasi input
-            $request->validate([
-                'nama_kategori' => 'required',
-                'keterangan' => 'nullable',
+            $validated = $request->validate([
+                'nama_kategori' => 'required|string|max:100',
+                'keterangan' => 'nullable|string|max:255',
             ]);
-        
-            // Simpan data barang terlebih dahulu tanpa gambar
-            $barang = KategoriBarang::create($request->only(['nama_kategori', 'keterangan']));
-        
+
+            // Simpan data
+            KategoriBarang::create($validated);
+
             // Redirect dengan pesan sukses
             return redirect()->route('kategori-barang')->with('success', Str::ucfirst($this->contentTitle) . ' berhasil ditambahkan');
 
+        } catch (ValidationException $e) {
+            // Kembali dengan error validasi
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
         } catch (\Exception $e) {
-            // Redirect dengan pesan error jika gagal menyimpan
+            // Kembali dengan error sistem lainnya
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -92,24 +101,28 @@ class KategoriBarangController extends Controller
     {
         try {
             // Validasi input
-            $request->validate([
-                'nama_kategori' => 'required',
-                'keterangan' => 'nullable',
+            $validated = $request->validate([
+                'nama_kategori' => 'required|string|max:100',
+                'keterangan' => 'nullable|string|max:255',
             ]);
-        
-            // Ambil data barang berdasarkan ID
-            $barang = KategoriBarang::findOrFail($id);
-        
-            // Ambil data yang diperbolehkan untuk update
-            $updateData = $request->only(['nama_kategori', 'keterangan']);
-        
-            // Update data barang di database
-            $barang->update($updateData);
-        
-            // Redirect dengan pesan sukses
+
+            // Ambil data berdasarkan ID
+            $kategori = KategoriBarang::findOrFail($id);
+
+            // Update data
+            $kategori->update($validated);
+
+            // Redirect sukses
             return redirect()->back()->with('success', Str::ucfirst($this->contentTitle) . ' berhasil diperbarui');
+
+        } catch (ValidationException $e) {
+            // Tangani error validasi
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+
         } catch (\Exception $e) {
-            // Redirect dengan pesan error jika gagal memperbarui
+            // Tangani error sistem
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }

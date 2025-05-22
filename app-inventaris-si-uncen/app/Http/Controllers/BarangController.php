@@ -9,6 +9,8 @@ use App\Models\Barang;
 use App\Models\KategoriBarang;
 use Illuminate\Support\Str;
 
+use Illuminate\Validation\ValidationException;
+
 class BarangController extends Controller
 {
     public $pageIcon;
@@ -58,37 +60,35 @@ class BarangController extends Controller
     {
         try {
             // Validasi input
-            $request->validate([
+            $validated = $request->validate([
                 'nama' => 'required|string|max:255',
                 'kategori_id' => 'required|exists:kategori_barang,id',
                 'satuan' => 'nullable|string|max:50',
                 'jumlah_satuan' => 'nullable|integer|min:1',
                 'satuan_harga' => 'nullable|numeric|min:0',
                 'keterangan' => 'nullable|string|max:500',
-                'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi gambar
+                'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]);
-        
-            // Simpan semua data validasi ke dalam variabel $barang
-            $barang = Barang::create($request->all());
-        
-            // Cek apakah ada file gambar yang diunggah
+
+            // Simpan data ke tabel
+            $barang = Barang::create($validated);
+
+            // Simpan gambar jika ada
             if ($request->hasFile('gambar')) {
-                // Buat folder berdasarkan ID barang
                 $folderPath = 'uploads/barang/' . $barang->id;
-        
-                // Simpan gambar ke folder yang sesuai
                 $gambarPath = $request->file('gambar')->store($folderPath, 'public');
-        
-                // Simpan path gambar ke database
                 $barang->update(['gambar' => $gambarPath]);
             }
-        
-            // Redirect dengan pesan sukses
+
             return redirect()->route('barang')->with('success', Str::ucfirst($this->contentTitle) . ' berhasil ditambahkan');
 
+        } catch (ValidationException $e) {
+            // Jangan tangani, biarkan Laravel redirect dengan error otomatis
+            throw $e;
+
         } catch (\Exception $e) {
-            // Redirect dengan pesan error jika gagal menyimpan
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            // Tangani error umum lainnya
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
     
@@ -133,7 +133,7 @@ class BarangController extends Controller
     {
         try {
             // Validasi input
-            $request->validate([
+            $validated = $request->validate([
                 'nama' => 'required|string|max:255',
                 'kategori_id' => 'required|exists:kategori_barang,id',
                 'satuan' => 'nullable|string|max:50',
@@ -147,38 +147,33 @@ class BarangController extends Controller
             // Ambil data barang berdasarkan ID
             $barang = Barang::findOrFail($id);
 
-            
-            // Ambil data yang diperbolehkan untuk update
-            $updateData = $request->all();
-            
-            // Hitung jumlah_harga jika jumlah_satuan dan satuan_harga tersedia
-            if ($request->harga_satuan && $request->jumlah_satuan) {
-                $jumlahHarga = $request->harga_satuan * $request->jumlah_satuan;
-                $updateData['jumlah_harga'] = $jumlahHarga;
+            // Hitung jumlah_harga jika tersedia
+            if ($request->filled(['harga_satuan', 'jumlah_satuan'])) {
+                $validated['jumlah_harga'] = $request->harga_satuan * $request->jumlah_satuan;
             }
 
-
-            // Cek apakah ada file gambar baru yang diunggah
+            // Cek jika ada gambar baru
             if ($request->hasFile('gambar')) {
                 // Hapus gambar lama jika ada
-                if ($barang->gambar) {
+                if ($barang->gambar && Storage::disk('public')->exists($barang->gambar)) {
                     Storage::disk('public')->delete($barang->gambar);
                 }
 
-                // Tentukan folder berdasarkan ID barang
+                // Simpan gambar baru
                 $folderPath = 'uploads/barang/' . $barang->id;
-
-                // Simpan gambar baru ke dalam folder
                 $gambarPath = $request->file('gambar')->store($folderPath, 'public');
-
-                // Simpan path gambar ke database
-                $updateData['gambar'] = $gambarPath;
+                $validated['gambar'] = $gambarPath;
             }
 
-            // Update data barang di database
-            $barang->update($updateData);
+            // Update data
+            $barang->update($validated);
 
             return redirect()->back()->with('success', Str::ucfirst($this->contentTitle) . ' berhasil diperbarui');
+
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }

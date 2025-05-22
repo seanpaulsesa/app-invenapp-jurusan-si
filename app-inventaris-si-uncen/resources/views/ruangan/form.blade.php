@@ -43,20 +43,27 @@
                             <!-- Nama Ruangan -->
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Ruangan</label>
-                                <input type="text" class="form-control" id="nama" name="nama" value="{{ $data->nama ?? '' }}" required>
+                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama', isset($data) ? $data->nama : '') }}">
                             </div>
 
                             <!-- Kategori Ruangan -->
                             <div class="mb-3">
                                 <label for="kategori_id" class="form-label">Kategori Ruangan</label>
-                                <select class="form-control" id="kategori_id" name="kategori_id" required>
+                                <select class="form-control @error('kategori_id') is-invalid @enderror" id="kategori_id" name="kategori_id">
                                     <option value="">-- Pilih Kategori --</option>
+
                                     @foreach($kategoriRuangan as $item)
-                                        <option value="{{ $item->id }}" {{ isset($data) && $data->kategori_id == $item->id ? 'selected' : '' }}>
+                                        <option value="{{ $item->id }}"
+                                            {{ old('kategori_id', isset($data) ? $data->kategori_id : '') == $item->id ? 'selected' : '' }}>
                                             {{ $item->nama_kategori }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('kategori_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
 
                             <!-- Keterangan -->
