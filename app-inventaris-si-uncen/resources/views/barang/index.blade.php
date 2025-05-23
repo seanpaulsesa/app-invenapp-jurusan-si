@@ -3,7 +3,8 @@
 @section('title', 'Barang')
 
 @section('css')
-<link href="{{ asset('template/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('template/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap4.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -29,7 +30,9 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Tabel Data Barang</h6>
+                            @if(Auth::user()->role != 'pimpinan')
                             <a href="{{ route('barang.create') }}" class="btn btn-primary btn-sm mb-3">Tambah Barang</a>
+                            @endif
                         </div>
                         <div class="card-body">
 
@@ -49,7 +52,9 @@
                                             <th>Jumlah Harga</th>
                                             <th>Keterangan</th>
                                             <th>Terakhir Diubah</th>
+                                            @if(Auth::user()->role != 'pimpinan')
                                             <th></th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -66,7 +71,9 @@
                                                 <td>Rp.{{ number_format($data->jumlah_harga, 0, ',', '.') }},-</td>
                                                 <td>{{ $data->keterangan }}</td>
                                                 <td>{{ $data->updated_at->diffForHumans() }} <br/> {{ $data->updated_at->translatedFormat('l, d F Y') }}</td>
+                                                @if(Auth::user()->role != 'pimpinan')
                                                 <td class="d-flex justify-content-center">
+
                                                     <!-- view button -->
                                                     {{-- <a href="{{ route('barang.show', $data->id) }}" class="btn btn-info btn-sm">View</a> --}}
                                                     <!-- edit and delete buttons -->
@@ -77,6 +84,7 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </td>
+                                                @endif
                                             </tr>
                                         @empty
                                             <tr>
@@ -130,66 +138,69 @@
     
 @endsection
 
-
 @push('scripts')
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Bootstrap JS (Pastikan ini setelah jQuery) -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        function confirmDelete(url) {
-            $('#deleteForm').attr('action', url);
-            $('#deleteModal').modal('show');
-        }
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            // Inisialisasi DataTable
-            var table = $('#dataTable').DataTable({
-                "dom": '<"row"<"col-sm-6"l><"col-sm-6 d-flex justify-content-end"f>>rtip',
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [[1, 'asc']]
-            });
-
-            // Menambahkan nomor urut otomatis
-            table.on('order.dt search.dt', function () {
-                table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-                    cell.innerHTML = i + 1;
-                });
-            }).draw();
-
-            
-
-            // Pindahkan dropdown ke dalam toolbar DataTables
-            $('#dataTable_filter').append(
-                '<label class="mr-2"><select id="filterKategori" class="form-control form-control-sm ml-2"><option value="">Semua Kategori</option></select></label>'
-            );
-
-            // Tambahkan opsi kategori ke dropdown dalam toolbar
-            @foreach($kategoriBarang as $item)
-                $('#filterKategori').append('<option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>');
-            @endforeach
-
-            // Event untuk filter kategori
-            $('#filterKategori').on('change', function () {
-                table.column(3).search(this.value).draw();
-            });
-        });
-    </script>
-
-
-
-    <!-- Page level plugins -->
+    <!-- DataTables -->
     <script src="{{ asset('template/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('template/js/demo/datatables-demo.js') }}"></script>
+    <!-- JSZip (for Excel export) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- DataTables Buttons -->
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+    <!-- Inisialisasi DataTable -->
+    <script>
+        $(document).ready(function () {
+        // Inisialisasi DataTable
+        var table = $('#dataTable').DataTable({
+            dom: '<"row mb-3"<"col-md-6"l><"col-md-6 d-flex justify-content-end align-items-center"fB>>rtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: '<div class="d-flex align-items-center"><i class="fas fa-file-excel"></i> Export</div>',
+                    className: 'btn btn-success btn-sm ml-2',
+                    titleAttr: 'Export ke Excel',
+                    exportOptions: {
+                        columns: ':visible:not(:last-child)' // kecualikan kolom aksi
+                    }
+                }
+            ],
+            columnDefs: [
+                { searchable: false, orderable: false, targets: 0 }
+            ],
+            order: [[1, 'asc']]
+        });
+
+        // Nomor urut otomatis di kolom pertama
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+        // Buat elemen dropdown filter kategori
+        var kategoriFilter = `
+            <label class="ml-2 mb-0 d-flex align-items-center">
+                <span class="mr-2">Kategori:</span>
+                <select id="filterKategori" class="form-control form-control-sm">
+                    <option value="">Semua Kategori</option>
+                    @foreach($kategoriBarang as $item)
+                        <option value="{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</option>
+                    @endforeach
+                </select>
+            </label>`;
+
+        // Tambahkan dropdown ke toolbar DataTables
+        $('.dt-buttons').after(kategoriFilter);
+
+        // Filter berdasarkan kategori (asumsikan kolom ke-3 adalah kategori)
+        $('#filterKategori').on('change', function () {
+            table.column(3).search(this.value).draw();
+        });
+    });
+    </script>
 @endpush
+

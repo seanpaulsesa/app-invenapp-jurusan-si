@@ -29,7 +29,9 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Tabel Data Ruangan</h6>
+                            @if(Auth::user()->role != 'pimpinan')
                             <a href="{{ route('ruangan.create') }}" class="btn btn-primary btn-sm mb-3">Tambah Ruangan</a>
+                            @endif
                         </div>
                         <div class="card-body">
 
@@ -44,7 +46,9 @@
                                             <th width="100px">Gambar</th>
                                             <th>Kategori</th>
                                             <th>Keterangan</th>
+                                            @if(Auth::user()->role != 'pimpinan')
                                             <th></th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -63,6 +67,7 @@
                                                 </td>
                                                 <td>{{ $data->kategori->nama_kategori }}</td>
                                                 <td>{{ $data->keterangan }}</td>
+                                                @if(Auth::user()->role != 'pimpinan')
                                                 <td>
                                                     <!-- view button -->
                                                     {{-- <a href="{{ route('ruangan.show', $data->id) }}" class="btn btn-info btn-sm">View</a> --}}
@@ -74,6 +79,7 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </td>
+                                                @endif
                                             </tr>
                                         @empty
                                             <tr>
