@@ -151,6 +151,13 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 
+    <script>
+        function confirmDelete(url) {
+            $('#deleteForm').attr('action', url);
+            $('#deleteModal').modal('show');
+        }
+    </script>
+
     <!-- Inisialisasi DataTable -->
     <script>
         $(document).ready(function () {
